@@ -3,8 +3,8 @@ import time
 
 def preambule():
     print("Bienvenue dans le jeu de Nim, qui se joue à 2. On dispose de n pièces (vous pourrez choisir votre nombre de pièces à chaque partie).", end="")
-    print("Vous pourrez choisir à chaque tour d'enlever entre 1 et 3 pièces. Le gagnant sera celui qui prendra la dernière pièce.", end="")
-    print("Vous pouvez choisir de jouer à 2, ou bien seul contre notre IA, qui s'appelle Hubert. Bonjour Hubert.")
+    print(" Vous pourrez choisir à chaque tour d'enlever entre 1 et 3 pièces. Le gagnant sera celui qui prendra la dernière pièce.", end="")
+    print(" Vous pouvez choisir de jouer à 2, ou bien seul contre notre IA, qui s'appelle Hubert. Bonjour Hubert.")
 
 def choix_mode():
     mode = input("Combien de joueurs veulent jouer? : ")
@@ -19,7 +19,8 @@ def choix_mode():
         joueur2 = "Hubert"
         return mode, joueur1, joueur2
     else: 
-        raise Exception ("Vous devez jouer soit à 1 soit à 2 !")
+        raise Exception ("Vous devez jouer soit à 1 soit à 2 !") 
+
 
 def creerPlateau(n):
     plateau = []
@@ -39,17 +40,20 @@ def retirerNpieces(n, plateau):
             plateau.pop()
         return plateau
 
-def afficherPlato(plateau):
+def afficherPlato(plateau,n):
+    print("Il reste ", len(plateau), "pièces !")
     print("|", end="")
     for i in range (len(plateau)):
         print (" ♦ |", end="")
+    for i in range (n-len(plateau)):
+        print( "   |", end="")
 
-def unTour(plateau, joueur):
+def unTour(plateau, joueur,n):
     print("À ton tour,", joueur, "!")
-    afficherPlato(plateau)
+    afficherPlato(plateau,n)
     print("")
-    n = input("Combien de pièces veux tu retirer? : ")
-    return retirerNpieces(int(n), plateau)
+    i = input("Combien de pièces veux tu retirer? : ")
+    return retirerNpieces(int(i), plateau)
 
 def partieFinie(plateau):
     if (len(plateau)==0):
@@ -66,8 +70,8 @@ def quiAgagne(i,joueur1, joueur2):
         return joueur1, joueur2
     return joueur2, joueur1
 
-def queFaitHubert(plateau):
-    afficherPlato(plateau)
+def queFaitHubert(plateau,n):
+    afficherPlato(plateau,n)
     if(len(plateau)%4==0):
         n = random.randint(1,3)
         time.sleep(1.0)
@@ -95,14 +99,14 @@ def quiCommence(joueur1, joueur2):
         print("C'est impair : Hubert commence. Bonne chance à tous les deux!")
         return joueur2, joueur1
 
-def jeu_a_deux(joueur1, joueur2, plateau):
+def jeu_a_deux(joueur1, joueur2, plateau,n):
     print("Allez, c'est parti ;)")
     print("")
     for i in range (len(plateau)):
         if (i%2==0):
-            plateau = unTour(plateau,joueur1)
+            plateau = unTour(plateau,joueur1,n)
         else:
-            plateau = unTour(plateau,joueur2)
+            plateau = unTour(plateau,joueur2,n)
         print("")
         if (partieFinie(plateau)):
             gagnant, perdant = quiAgagne(i,joueur1,joueur2)
@@ -110,16 +114,16 @@ def jeu_a_deux(joueur1, joueur2, plateau):
     print("Bravo", gagnant, "tu es trop fort.e !!")
     print("Déso", perdant, "retournes t'entraîner :D")
 
-def jeu_a_un(joueur1, joueur2, plateau):
+def jeu_a_un(joueur1, joueur2, plateau,n):
     p1, p2= quiCommence(joueur1,joueur2)
     print("Let's go!")
     print("")
     if(p1==joueur1):
         for i in range(len(plateau)):
             if (i%2==0):
-                plateau = unTour(plateau, joueur1)
+                plateau = unTour(plateau, joueur1,n)
             else: 
-                plateau = queFaitHubert(plateau)
+                plateau = queFaitHubert(plateau,n)
             print("")
             if(partieFinie(plateau)):
                 gagnant, perdant = quiAgagne(i, joueur1, joueur2)
@@ -132,9 +136,9 @@ def jeu_a_un(joueur1, joueur2, plateau):
         for i in range(1, len(plateau)+1):
             time.sleep(0.5)
             if (i%2==0):
-                plateau = unTour(plateau, joueur1)
+                plateau = unTour(plateau, joueur1,n)
             else: 
-                plateau = queFaitHubert(plateau)
+                plateau = queFaitHubert(plateau,n)
             print("")
             if(partieFinie(plateau)):
                 gagnant, perdant = quiAgagne(i, joueur1, joueur2)
@@ -153,9 +157,8 @@ def partie():
     n = nombreDePieces()
     plateau = creerPlateau(n)
     if (int(mode) == 2):
-        jeu_a_deux(joueur1, joueur2, plateau)
+        jeu_a_deux(joueur1, joueur2, plateau,n)
     if (int(mode)==1):
-        jeu_a_un(joueur1, joueur2, plateau)
+        jeu_a_un(joueur1, joueur2, plateau,n)
 #rejouer ? garder le fil des parties ? demander si tu veux les explications ? 
-    
 partie()
