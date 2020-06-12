@@ -47,7 +47,7 @@ def jeu_un_tour(nom_utilisateur):
 def verif_tour(ligne, colonne, cases):
     if (ligne<=2)and(ligne>=0):
         if (colonne<=2)and(colonne>=0):
-            if(cases[ligne][colonne]!="X")or(cases[ligne][colonne]!="O"):
+            if(cases[ligne][colonne]!="X")and(cases[ligne][colonne]!="O"):
                 return True
     return False 
 
@@ -247,21 +247,33 @@ def jeu_a_deux():
                 if(bloquer_l_adversaire(cases)==True):
                   bloquer_l_adversaire(cases)
                   z = 1
-                if(gagner(cases)==True):
+                elif(gagner(cases)==True):
                   gagner(cases)
-                if(y == 1):
+                elif(y == 1):
                   if(z == 0):
                     cases[0][2] = "O"
-                if(y == 2):
+                elif(y == 2):
                   if(z == 0):
                     cases[0][2] = "O"
-                if(y == 3):
+                elif(y == 3):
                   cases[2][2] = "O"
+                else :
+                  for j in range(3):
+                    for k in range(3):
+                      if(verif_tour(j,k,cases)):
+                        cases[j][k] = "0"
+                        break 
               if(i == 6 or i ==8):
                 if(bloquer_l_adversaire(cases)==True):
                   bloquer_l_adversaire(cases)
-                if(gagner(cases)==True):
+                elif(gagner(cases)==True):
                   gagner(cases)
+                else :
+                  for l in range(3):
+                    for m in range(3):
+                      if(verif_tour(l,m,cases)):
+                        cases[l][m] = "0"
+                        break 
 #              if(x == 2):
 #                if(i==0):
 #                  cases[0][0] = "O"
